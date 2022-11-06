@@ -1,0 +1,58 @@
+{  
+    "seed"          : 0,
+    "gpus"          : 1,
+    "num_tpu_cores" : null,
+    "precision"     : 32,
+    "device"        : "cuda",
+    
+    "weight_decay"  : 0.0, 
+    "use_ema"       : false,
+    "ema_decay"     : null, 
+    "ema_eval_freq" : 1, 
+    "drop_rate"     : 0.2, 
+    "drop_path_rate": 0.2,
+
+    "lr"            : 0.0003,
+    "epoch"         : 200, 
+    "batch_size"    : 12,
+    "img_size"      : 512,
+    "optim"         : "radam", 
+
+    "resume_from_checkpoint" : null,
+
+    "ckpt_path"       : "../modelhub/1667669782/checkpoints/epoch=199.ckpt",
+    "model_fp32_path" : "../coreMLhub/starbucks_fp32.mlmodel",
+    "model_fp16_path" : "../coreMLhub/starbucks_fp16.mlmodel",
+
+    "arch_name"     : "mobilenetv2_100", 
+    "io_ratio"      : "same",
+    "category"      : "binary",
+    "num_classes"   : 1,
+
+    "coreml"    : false,
+    "CLASS_DIR" : "starbucks",
+
+    "CLASS_COLOR_RGB"  :  {
+        "starbucks":       [128, 0,  0]
+    },
+
+    "starbucks" :{
+        "train" : {
+            "base":
+            [
+                "../../datahub/starbucks/train.csv", 
+                "../../datahub/starbucks/image",
+                "../../datahub/starbucks/mask"
+            ]
+        },
+        "valid" : {
+            "base":
+            [
+                "../../datahub/starbucks/valid.csv", 
+                "../../datahub/starbucks/image",
+                "../../datahub/starbucks/mask"
+            ]
+        }
+    }
+
+}

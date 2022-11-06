@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # C extensions
 *.so
@@ -123,7 +124,21 @@ venv.bak/
 # mypy
 .mypy_cache/
 .dmypy.json
+
+
 dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# vscode
+.vscode/
+
+# FILES
+experiments
+tmp
+__pycache__
+*.pyc
+lightning.log
+
+.DS_Store
