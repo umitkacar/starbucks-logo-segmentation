@@ -1,4 +1,4 @@
-# Starbucks Logo Segmentation
+<h1 align="center">Starbucks Logo Segmentation</h1>
 
 <div align="center">
     <img src="starbucks-logo.png" width="200" height="200">
