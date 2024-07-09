@@ -57,7 +57,6 @@ ruff==0.0.205
 scikit-image==0.19.3
 scikit-learn==1.2.0
 scipy==1.9.3
-segmentation-models-pytorch==0.3.1
 six==1.16.0
 smmap==5.0.0
 stevedore==4.1.1
