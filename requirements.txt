@@ -51,7 +51,7 @@ parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==8.0.1
-pkg_resources==0.0.0
+pkg_resources
 prompt-toolkit==3.0.23
 protobuf==3.14.0
 ptyprocess==0.7.0
