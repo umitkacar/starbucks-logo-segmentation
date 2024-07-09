@@ -10,7 +10,6 @@ coverage==7.0.1
 cycler==0.11.0
 debugpy==1.6.4
 distlib==0.3.6
--e git+ssh://git@github.com/umitkacar/Ear-segmentation-ai.git@9c8eb0b08c4164976a20fb5afc3fa2fc2abf1df0#egg=earsegmentationai
 efficientnet-pytorch==0.7.1
 filelock==3.9.0
 fonttools==4.38.0
