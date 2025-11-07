@@ -4,7 +4,7 @@ from typing import TypeVar
 import torch
 import torch.nn as nn
 
-T = TypeVar('T', bound=nn.Module)
+T = TypeVar("T", bound=nn.Module)
 
 
 def create_ema(src_model: T) -> T:
@@ -19,4 +19,4 @@ def update_ema(ema_model: nn.Module, model: nn.Module, decay: float):
     msd = model.state_dict()
     for k, ema_v in ema_model.state_dict().items():
         model_v = msd[k].detach()
-        ema_v.copy_(ema_v * decay + (1. - decay) * model_v)
+        ema_v.copy_(ema_v * decay + (1.0 - decay) * model_v)

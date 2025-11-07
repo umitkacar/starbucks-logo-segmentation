@@ -9,7 +9,9 @@ def calculate_distances(p0: torch.Tensor, p1: torch.Tensor) -> torch.Tensor:
     return Dij
 
 
-def calculate_torsions(p0: torch.Tensor, p1: torch.Tensor, p2: torch.Tensor, p3: torch.Tensor) -> torch.Tensor:
+def calculate_torsions(
+    p0: torch.Tensor, p1: torch.Tensor, p2: torch.Tensor, p3: torch.Tensor
+) -> torch.Tensor:
     b0 = -1.0 * (p1 - p0)
     b1 = p2 - p1
     b2 = p3 - p2
@@ -29,16 +31,24 @@ def calculate_torsions(p0: torch.Tensor, p1: torch.Tensor, p2: torch.Tensor, p3:
 
 
 # %%
-if __name__ == '__main__':
+if __name__ == "__main__":
     # %%
-    coords = torch.tensor([[10.396, 18.691, 19.127],
-                           [9.902, 18.231, 20.266],
-                           [8.736, 17.274, 20.226],
-                           [7.471, 18.048, 19.846]])
-    coords2 = torch.tensor([[7.471, 18.048, 19.846],
-                            [6.67, 17.583, 18.852],
-                            [5.494, 18.412, 18.503],
-                            [4.59, 18.735, 19.711]])
+    coords = torch.tensor(
+        [
+            [10.396, 18.691, 19.127],
+            [9.902, 18.231, 20.266],
+            [8.736, 17.274, 20.226],
+            [7.471, 18.048, 19.846],
+        ]
+    )
+    coords2 = torch.tensor(
+        [
+            [7.471, 18.048, 19.846],
+            [6.67, 17.583, 18.852],
+            [5.494, 18.412, 18.503],
+            [4.59, 18.735, 19.711],
+        ]
+    )
 
     print(calculate_torsions(*coords))
     print(calculate_torsions(*coords2))

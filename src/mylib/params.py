@@ -1,12 +1,11 @@
-from argparse import ArgumentParser
 from pathlib import Path
-from typing import TypeVar, Type, Optional, Union, IO, Dict
+from typing import IO, Dict, Optional, Type, TypeVar, Union
 
 import yaml
 from dacite import from_dict
-from omegaconf import OmegaConf, DictConfig
+from omegaconf import DictConfig, OmegaConf
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class ParamsMixIn:
@@ -15,7 +14,7 @@ class ParamsMixIn:
         # if file is None:
         #     parser = ArgumentParser()
         #     parser.add_argument('file', type=str)
-        file = "params/001.yaml" #parser.parse_args().file
+        file = "params/001.yaml"  # parser.parse_args().file
         data = OmegaConf.to_container(OmegaConf.load(file))
 
         return from_dict(data_class=cls, data=data)

@@ -4,16 +4,16 @@ from sklearn.preprocessing import KBinsDiscretizer
 
 class KBinsStratifiedKFold(StratifiedKFold):
     def __init__(
-            self,
-            n_splits=5,
-            *,
-            shuffle=False,
-            random_state=None,
-            n_bins: int = 5,
-            strategy: str = 'quantile',
+        self,
+        n_splits=5,
+        *,
+        shuffle=False,
+        random_state=None,
+        n_bins: int = 5,
+        strategy: str = "quantile",
     ):
         super().__init__(n_splits, shuffle=shuffle, random_state=random_state)
-        self.kbd = KBinsDiscretizer(n_bins=n_bins, encode='ordinal', strategy=strategy)
+        self.kbd = KBinsDiscretizer(n_bins=n_bins, encode="ordinal", strategy=strategy)
 
     def _iter_test_indices(self, X=None, y=None, groups=None):
         super()._iter_test_indices()
@@ -24,7 +24,7 @@ class KBinsStratifiedKFold(StratifiedKFold):
 
 
 # %%
-if __name__ == '__main__':
+if __name__ == "__main__":
     # %%
     import numpy as np
 

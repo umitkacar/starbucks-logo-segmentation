@@ -1,24 +1,27 @@
 import numbers
-from typing import List, Optional, Iterable, Union
+from typing import Iterable, List, Optional, Union
 
 import category_encoders as ce
 import numpy as np
 import pandas as pd
 from category_encoders.utils import convert_input, convert_input_vector
+
 from sklearn import model_selection
-from sklearn.base import BaseEstimator, clone, TransformerMixin
-from sklearn.model_selection import BaseCrossValidator, StratifiedKFold, KFold
+from sklearn.base import BaseEstimator, TransformerMixin, clone
+from sklearn.model_selection import BaseCrossValidator, KFold, StratifiedKFold
 from sklearn.utils.multiclass import type_of_target
 
 
-def check_cv(cv: Union[int, Iterable, BaseCrossValidator] = 5,
-             y: Optional[Union[pd.Series, np.ndarray]] = None,
-             stratified: bool = False,
-             random_state: int = 0):
+def check_cv(
+    cv: Union[int, Iterable, BaseCrossValidator] = 5,
+    y: Optional[Union[pd.Series, np.ndarray]] = None,
+    stratified: bool = False,
+    random_state: int = 0,
+):
     if cv is None:
         cv = 5
     if isinstance(cv, numbers.Integral):
-        if stratified and (y is not None) and (type_of_target(y) in ('binary', 'multiclass')):
+        if stratified and (y is not None) and (type_of_target(y) in ("binary", "multiclass")):
             return StratifiedKFold(cv, shuffle=True, random_state=random_state)
         else:
             return KFold(cv, shuffle=True, random_state=random_state)
@@ -49,9 +52,13 @@ class KFoldEncoderWrapper(BaseEstimator, TransformerMixin):
             If False, these APIs always return a numpy array, similar to sklearn's API.
     """
 
-    def __init__(self, base_transformer: BaseEstimator,
-                 cv: Optional[Union[int, Iterable, BaseCrossValidator]] = None, return_same_type: bool = True,
-                 groups: Optional[pd.Series] = None):
+    def __init__(
+        self,
+        base_transformer: BaseEstimator,
+        cv: Optional[Union[int, Iterable, BaseCrossValidator]] = None,
+        return_same_type: bool = True,
+        groups: Optional[pd.Series] = None,
+    ):
         self.cv = cv
         self.base_transformer = base_transformer
 
@@ -115,8 +122,9 @@ class KFoldEncoderWrapper(BaseEstimator, TransformerMixin):
         X_ = self._post_transform(X_)
         return X_ if self.return_same_type and is_pandas else X_.values
 
-    def fit_transform(self, X: Union[pd.DataFrame, np.ndarray], y: pd.Series = None, **fit_params) \
-            -> Union[pd.DataFrame, np.ndarray]:
+    def fit_transform(
+        self, X: Union[pd.DataFrame, np.ndarray], y: pd.Series = None, **fit_params
+    ) -> Union[pd.DataFrame, np.ndarray]:
         """
         Fit models for each fold, then transform X
 
@@ -185,15 +193,27 @@ class TargetEncoder(KFoldEncoderWrapper):
             If False, these APIs always return a numpy array, similar to sklearn's API.
     """
 
-    def __init__(self, cv: Optional[Union[Iterable, BaseCrossValidator]] = None,
-                 groups: Optional[pd.Series] = None,
-                 cols: List[str] = None,
-                 drop_invariant: bool = False, handle_missing: str = 'value', handle_unknown: str = 'value',
-                 min_samples_leaf: int = 1, smoothing: float = 1.0, return_same_type: bool = True):
-        e = ce.TargetEncoder(cols=cols, drop_invariant=drop_invariant, return_df=True,
-                             handle_missing=handle_missing,
-                             handle_unknown=handle_unknown,
-                             min_samples_leaf=min_samples_leaf, smoothing=smoothing)
+    def __init__(
+        self,
+        cv: Optional[Union[Iterable, BaseCrossValidator]] = None,
+        groups: Optional[pd.Series] = None,
+        cols: List[str] = None,
+        drop_invariant: bool = False,
+        handle_missing: str = "value",
+        handle_unknown: str = "value",
+        min_samples_leaf: int = 1,
+        smoothing: float = 1.0,
+        return_same_type: bool = True,
+    ):
+        e = ce.TargetEncoder(
+            cols=cols,
+            drop_invariant=drop_invariant,
+            return_df=True,
+            handle_missing=handle_missing,
+            handle_unknown=handle_unknown,
+            min_samples_leaf=min_samples_leaf,
+            smoothing=smoothing,
+        )
 
         super().__init__(e, cv, return_same_type, groups)
 

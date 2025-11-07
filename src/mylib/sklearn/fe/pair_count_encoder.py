@@ -1,7 +1,8 @@
+import numpy as np
 import pandas as pd
+
 from sklearn.base import TransformerMixin
 from sklearn.decomposition import TruncatedSVD
-import numpy as np
 
 
 # https://www.kaggle.com/matleonard/categorical-encodings
@@ -11,11 +12,14 @@ class PairCountEncoder(TransformerMixin):
         self.svd_encoding = None
 
     def fit(self, X, y=None):
-        df = pd.concat((
-            pd.DataFrame(X.values, columns=['main', 'sub']),
-            pd.DataFrame(np.ones(len(X)), columns=['y'])
-        ), axis=1)
-        pair_counts = df.groupby(['main', 'sub'])['y'].count()
+        df = pd.concat(
+            (
+                pd.DataFrame(X.values, columns=["main", "sub"]),
+                pd.DataFrame(np.ones(len(X)), columns=["y"]),
+            ),
+            axis=1,
+        )
+        pair_counts = df.groupby(["main", "sub"])["y"].count()
         mat = pair_counts.unstack(fill_value=0)
         self.svd_encoding = pd.DataFrame(self.svd.fit_transform(mat), index=mat.index)
         return self

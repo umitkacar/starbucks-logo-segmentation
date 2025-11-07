@@ -4,6 +4,7 @@ from typing import Optional
 from mobile_seg import EXP_DIR
 from mylib.params import ParamsMixIn
 
+
 @dataclasses.dataclass(frozen=True)
 class TrainerParams(ParamsMixIn):
     num_tpu_cores: Optional[int] = None
@@ -23,13 +24,13 @@ class ModuleParams(ParamsMixIn):
     lr: float = 1e-3
     weight_decay: float = 1e-4
 
-    optim: str = 'radam'
+    optim: str = "radam"
 
     ema_decay: Optional[float] = None
     ema_eval_freq: int = 1
 
-    drop_rate: float = 0.
-    drop_path_rate: float = 0.
+    drop_rate: float = 0.0
+    drop_path_rate: float = 0.0
 
     @property
     def use_ema(self) -> bool:
@@ -57,7 +58,7 @@ class Params(ParamsMixIn):
     module_params: ModuleParams
     trainer_params: TrainerParams
     data_params: DataParams
-    note: str = ''
+    note: str = ""
 
     @property
     def m(self) -> ModuleParams:
@@ -78,20 +79,22 @@ class Params(ParamsMixIn):
     def copy_for_cv(self):
         conf_orig = self.dict_config()
         return [
-            Params.from_dict({
-                **conf_orig,
-                'data_params': {
-                    **conf_orig.module_params,
-                    'fold': n,
-                },
-            })
+            Params.from_dict(
+                {
+                    **conf_orig,
+                    "data_params": {
+                        **conf_orig.module_params,
+                        "fold": n,
+                    },
+                }
+            )
             for n in range(self.d.n_splits)
         ]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # %%
-    p = Params.load('params/001.yaml')
+    p = Params.load("params/001.yaml")
     print(p)
     # %%
     for cp in p.copy_for_cv():
