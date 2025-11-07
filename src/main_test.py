@@ -5,9 +5,8 @@ Modern visualization and GIF generation with best practices
 
 import json
 from pathlib import Path
-from typing import Optional, Tuple, Dict
+from typing import Dict, Tuple
 
-import albumentations as A
 import cv2
 import imageio
 import imgviz
@@ -15,10 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
-from torch.utils.data import DataLoader
+from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
 
-from mobile_seg.dataset import load_df, MaskDataset
 from mobile_seg.modules.net import load_trained_model
 
 console = Console()
@@ -34,11 +31,7 @@ def setup_output_dirs(output_dir: Path) -> Dict[str, Path]:
     Returns:
         Dictionary of output paths
     """
-    dirs = {
-        'output': output_dir,
-        'visual': output_dir / "visual",
-        'gif': output_dir / "gif_image"
-    }
+    dirs = {"output": output_dir, "visual": output_dir / "visual", "gif": output_dir / "gif_image"}
 
     for path in dirs.values():
         path.mkdir(exist_ok=True, parents=True)
@@ -46,7 +39,7 @@ def setup_output_dirs(output_dir: Path) -> Dict[str, Path]:
     return dirs
 
 
-def load_config(config_path: str = 'params/config.json') -> dict:
+def load_config(config_path: str = "params/config.json") -> dict:
     """
     Load configuration from JSON file.
 
@@ -61,8 +54,7 @@ def load_config(config_path: str = 'params/config.json') -> dict:
 
 
 def load_and_preprocess_image(
-    image_path: Path,
-    img_size: int = 512
+    image_path: Path, img_size: int = 512
 ) -> Tuple[torch.Tensor, np.ndarray]:
     """
     Load and preprocess image for inference.
@@ -79,11 +71,7 @@ def load_and_preprocess_image(
     img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     # Resize
-    img_resized = cv2.resize(
-        img_rgb,
-        (img_size, img_size),
-        interpolation=cv2.INTER_NEAREST
-    )
+    img_resized = cv2.resize(img_rgb, (img_size, img_size), interpolation=cv2.INTER_NEAREST)
 
     # Convert to tensor
     img_tensor = torch.from_numpy(
@@ -94,10 +82,7 @@ def load_and_preprocess_image(
 
 
 def visualize_comparison(
-    output_path: Path,
-    original: np.ndarray,
-    prediction: np.ndarray,
-    save: bool = True
+    output_path: Path, original: np.ndarray, prediction: np.ndarray, save: bool = True
 ) -> None:
     """
     Create side-by-side visualization of original and predicted mask.
@@ -111,24 +96,22 @@ def visualize_comparison(
     fig, axes = plt.subplots(1, 2, figsize=(16, 5))
 
     axes[0].imshow(original)
-    axes[0].set_title('Original Image', fontsize=14)
-    axes[0].axis('off')
+    axes[0].set_title("Original Image", fontsize=14)
+    axes[0].axis("off")
 
     axes[1].imshow(prediction, cmap=plt.cm.gray)
-    axes[1].set_title('Predicted Mask', fontsize=14)
-    axes[1].axis('off')
+    axes[1].set_title("Predicted Mask", fontsize=14)
+    axes[1].axis("off")
 
     plt.tight_layout()
 
     if save:
-        plt.savefig(output_path, dpi=150, bbox_inches='tight')
+        plt.savefig(output_path, dpi=150, bbox_inches="tight")
         plt.close()
 
 
 def create_overlay_visualization(
-    original: np.ndarray,
-    mask: np.ndarray,
-    alpha: float = 0.5
+    original: np.ndarray, mask: np.ndarray, alpha: float = 0.5
 ) -> np.ndarray:
     """
     Create overlay visualization with colored mask.
@@ -156,11 +139,7 @@ def create_overlay_visualization(
 
 
 def generate_gif(
-    gif_dir: Path,
-    output_path: Path,
-    original: np.ndarray,
-    overlay: np.ndarray,
-    fps: int = 2
+    gif_dir: Path, output_path: Path, original: np.ndarray, overlay: np.ndarray, fps: int = 2
 ) -> None:
     """
     Generate animated GIF showing original and overlay.
@@ -184,17 +163,14 @@ def generate_gif(
 
     # Download imageio plugin if needed
     try:
-        imageio.mimsave(output_path, frames, 'GIF-FI', fps=fps)
+        imageio.mimsave(output_path, frames, "GIF-FI", fps=fps)
     except Exception:
         # Fallback to standard GIF
         imageio.mimsave(output_path, frames, fps=fps)
 
 
 def process_image(
-    model: torch.nn.Module,
-    image_path: Path,
-    config: dict,
-    output_dirs: Dict[str, Path]
+    model: torch.nn.Module, image_path: Path, config: dict, output_dirs: Dict[str, Path]
 ) -> None:
     """
     Process a single image and generate all visualizations.
@@ -208,10 +184,7 @@ def process_image(
     console.print(f"[cyan]Processing: {image_path.name}[/cyan]")
 
     # Load and preprocess
-    img_tensor, img_array = load_and_preprocess_image(
-        image_path,
-        config["img_size"]
-    )
+    img_tensor, img_array = load_and_preprocess_image(image_path, config["img_size"])
 
     # Inference
     with torch.no_grad():
@@ -219,15 +192,15 @@ def process_image(
         mask = output.squeeze().numpy()
 
     # Create visualizations
-    vis_path = output_dirs['visual'] / f"Starbucks_logo_{image_path.stem}.png"
+    vis_path = output_dirs["visual"] / f"Starbucks_logo_{image_path.stem}.png"
     visualize_comparison(vis_path, img_array, mask, save=True)
 
     # Create overlay
     overlay = create_overlay_visualization(img_array, mask)
 
     # Generate GIF
-    gif_path = output_dirs['output'] / f'Starbucks_logo_{image_path.stem}.gif'
-    generate_gif(output_dirs['gif'], gif_path, img_array, overlay)
+    gif_path = output_dirs["output"] / f"Starbucks_logo_{image_path.stem}.gif"
+    generate_gif(output_dirs["gif"], gif_path, img_array, overlay)
 
     console.print(f"[green]✓[/green] Saved results to {gif_path}")
 
@@ -238,16 +211,16 @@ def main():
     console.print("[dim]Generating visualizations and animations[/dim]\n")
 
     # Setup
-    output_dirs = setup_output_dirs(Path('../output'))
+    output_dirs = setup_output_dirs(Path("../output"))
     config = load_config()
 
-    console.print(f"[green]✓[/green] Configuration loaded")
-    console.print(f"[green]✓[/green] Output directories created\n")
+    console.print("[green]✓[/green] Configuration loaded")
+    console.print("[green]✓[/green] Output directories created\n")
 
     # Load model
     console.print("[yellow]Loading trained model...[/yellow]")
     model = load_trained_model(config).to(config["device"]).eval()
-    console.print(f"[green]✓[/green] Model loaded successfully\n")
+    console.print("[green]✓[/green] Model loaded successfully\n")
 
     # Example image path (update this to your actual image path)
     example_images = [
@@ -261,10 +234,7 @@ def main():
         BarColumn(),
         console=console,
     ) as progress:
-        task = progress.add_task(
-            "[cyan]Processing images...",
-            total=len(example_images)
-        )
+        task = progress.add_task("[cyan]Processing images...", total=len(example_images))
 
         for img_path in example_images:
             if img_path.exists():
@@ -278,5 +248,5 @@ def main():
     console.print(f"[dim]Results saved to: {output_dirs['output']}[/dim]")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

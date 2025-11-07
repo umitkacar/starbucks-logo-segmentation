@@ -3,7 +3,7 @@ from typing import List
 from lightgbm import Booster
 
 
-class ModelExtractionCallback(object):
+class ModelExtractionCallback:
     def __init__(self):
         self._model = None
 
@@ -12,7 +12,7 @@ class ModelExtractionCallback(object):
 
     def _assert_called_cb(self):
         if self._model is None:
-            raise RuntimeError('callback has not called yet')
+            raise RuntimeError("callback has not called yet")
 
     @property
     def boosters_proxy(self):

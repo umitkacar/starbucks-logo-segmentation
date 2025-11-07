@@ -4,14 +4,14 @@ import torch.nn as nn
 
 class GraphNorm(nn.Module):
 
-    def __init__(self, norm_type='gn', hidden_dim=64, print_info=None):
+    def __init__(self, norm_type="gn", hidden_dim=64, print_info=None):
         super(GraphNorm, self).__init__()
         # assert norm_type in ['bn', 'ln', 'gn', None]
         self.norm = None
         self.print_info = print_info
-        if norm_type == 'bn':
+        if norm_type == "bn":
             self.norm = nn.BatchNorm1d(hidden_dim)
-        elif norm_type == 'gn':
+        elif norm_type == "gn":
             self.norm = norm_type
             self.weight = nn.Parameter(torch.ones(hidden_dim))
             self.bias = nn.Parameter(torch.zeros(hidden_dim))
@@ -42,8 +42,8 @@ class GraphNorm(nn.Module):
         return self.weight * sub / std + self.bias
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     inputs = torch.randn(107 * 2, 64)
-    norm = GraphNorm('gn')
+    norm = GraphNorm("gn")
     out = norm.forward(torch.tensor([107, 107]), inputs)
     print(out.shape)

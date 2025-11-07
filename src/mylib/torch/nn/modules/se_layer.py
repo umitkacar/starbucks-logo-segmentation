@@ -1,8 +1,8 @@
-import torch
 from timm.models.layers import Mish
-from torch import nn
 
+import torch
 from mylib.torch.nn.modules.dense import Dense
+from torch import nn
 
 
 class SELayer(nn.Module):
@@ -16,7 +16,7 @@ class SELayer(nn.Module):
             Dense(channel, channel // reduction, bias=False),
             Mish(inplace=True),
             Dense(channel // reduction, channel, bias=False),
-            nn.Sigmoid()
+            nn.Sigmoid(),
         )
 
     def forward(self, x):
@@ -26,7 +26,7 @@ class SELayer(nn.Module):
         return x * y.expand_as(x)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     inputs = torch.randn((3, 12, 768, 1))
     m = SELayer(12)
     # %%

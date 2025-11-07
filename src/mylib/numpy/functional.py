@@ -12,11 +12,7 @@ def rand_rotation_matrix(deflection=1.0, rand=None):
     z = z * 2.0 * deflection
 
     r = np.sqrt(z)
-    V = (
-        np.sin(phi) * r,
-        np.cos(phi) * r,
-        np.sqrt(2.0 - z)
-    )
+    V = (np.sin(phi) * r, np.cos(phi) * r, np.sqrt(2.0 - z))
 
     st = np.sin(theta)
     ct = np.cos(theta)

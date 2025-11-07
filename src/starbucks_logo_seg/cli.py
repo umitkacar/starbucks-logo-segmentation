@@ -4,12 +4,9 @@ Modern CLI with rich output and user-friendly commands
 """
 
 import sys
-from pathlib import Path
-from typing import Optional
 
 import click
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn
 
 console = Console()
 
@@ -52,6 +49,7 @@ def train(config: str, gpus: int):
     try:
         # Import here to avoid slow startup
         from .training.train import main as train_main
+
         train_main(config, gpus)
         console.print("[bold green]✅ Training completed successfully![/bold green]")
     except Exception as e:
@@ -91,6 +89,7 @@ def predict(config: str, image: str, output: str):
 
     try:
         from .inference.predict import main as predict_main
+
         predict_main(config, image, output)
         console.print(f"[bold green]✅ Prediction saved to: {output}[/bold green]")
     except Exception as e:
@@ -116,6 +115,7 @@ def test(config: str):
 
     try:
         from .inference.test import main as test_main
+
         test_main(config)
         console.print("[bold green]✅ Testing completed successfully![/bold green]")
     except Exception as e:

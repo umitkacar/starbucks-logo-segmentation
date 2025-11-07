@@ -8,12 +8,11 @@ import logging
 from logging import FileHandler, getLogger
 from pathlib import Path
 from time import time
-from typing import Dict, Any
+from typing import Any, Dict
 
 import pytorch_lightning as pl
-from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping, LearningRateMonitor
+from pytorch_lightning.callbacks import EarlyStopping, LearningRateMonitor, ModelCheckpoint
 from rich.console import Console
-from rich.logging import RichHandler
 
 from data import DataModule
 from model import PLModule
@@ -22,7 +21,7 @@ from mylib.pytorch_lightning.logging import configure_logging
 console = Console()
 
 
-def load_config(config_path: str = 'params/config.json') -> Dict[str, Any]:
+def load_config(config_path: str = "params/config.json") -> Dict[str, Any]:
     """
     Load configuration from JSON file.
 
@@ -39,7 +38,7 @@ def load_config(config_path: str = 'params/config.json') -> Dict[str, Any]:
     with open(config_file) as f:
         config = json.load(f)
 
-    config["save_dir"] = Path('../experiments')
+    config["save_dir"] = Path("../experiments")
     return config
 
 
@@ -53,8 +52,8 @@ def setup_logger(log_dir: Path) -> logging.Logger:
     Returns:
         Configured logger
     """
-    logger = getLogger('lightning')
-    logger.addHandler(FileHandler(log_dir / 'train.log'))
+    logger = getLogger("lightning")
+    logger.addHandler(FileHandler(log_dir / "train.log"))
     return logger
 
 
@@ -68,18 +67,18 @@ def create_callbacks(config: Dict[str, Any]) -> list:
     Returns:
         List of callbacks
     """
-    monitor_metric = 'ema_0_loss' if config.get("use_ema") else 'val_0_loss'
+    monitor_metric = "ema_0_loss" if config.get("use_ema") else "val_0_loss"
 
     callbacks = [
         ModelCheckpoint(
             monitor=monitor_metric,
             save_last=True,
             save_top_k=3,
-            mode='min',
+            mode="min",
             verbose=True,
-            filename='{epoch}-{val_0_loss:.4f}',
+            filename="{epoch}-{val_0_loss:.4f}",
         ),
-        LearningRateMonitor(logging_interval='step'),
+        LearningRateMonitor(logging_interval="step"),
     ]
 
     # Optional: Add early stopping
@@ -88,7 +87,7 @@ def create_callbacks(config: Dict[str, Any]) -> list:
             EarlyStopping(
                 monitor=monitor_metric,
                 patience=20,
-                mode='min',
+                mode="min",
                 verbose=True,
             )
         )
@@ -103,7 +102,7 @@ def main():
 
     # Load configuration
     config = load_config()
-    console.print(f"[green]✓[/green] Configuration loaded")
+    console.print("[green]✓[/green] Configuration loaded")
     console.print(f"[dim]Epochs: {config['epoch']}, Batch Size: {config['batch_size']}[/dim]")
 
     # Configure logging
@@ -114,7 +113,7 @@ def main():
     # Create TensorBoard logger
     tb_logger = pl.loggers.TensorBoardLogger(
         config["save_dir"],
-        name='mobile_seg',
+        name="mobile_seg",
         version=str(int(time())),
     )
 
@@ -140,8 +139,10 @@ def main():
         benchmark=True,
     )
 
-    console.print(f"[green]✓[/green] Trainer initialized")
-    console.print(f"[dim]Using {config.get('gpus', 0)} GPU(s), Precision: {config['precision']}-bit[/dim]")
+    console.print("[green]✓[/green] Trainer initialized")
+    console.print(
+        f"[dim]Using {config.get('gpus', 0)} GPU(s), Precision: {config['precision']}-bit[/dim]"
+    )
 
     # Create model and data module
     console.print("\n[bold yellow]Initializing model and dataset...[/bold yellow]")
@@ -149,7 +150,7 @@ def main():
     dm = DataModule(config)
 
     console.print(f"[green]✓[/green] Model architecture: {config['arch_name']}")
-    console.print(f"[green]✓[/green] Dataset prepared\n")
+    console.print("[green]✓[/green] Dataset prepared\n")
 
     # Start training
     console.print("[bold green]🚀 Starting training...[/bold green]\n")
@@ -162,5 +163,5 @@ def main():
         raise
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

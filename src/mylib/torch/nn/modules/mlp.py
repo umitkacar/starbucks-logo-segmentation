@@ -1,7 +1,7 @@
 from timm.models.layers import mish
-from torch import nn
 
 from mylib.torch.nn.modules.dense import Dense
+from torch import nn
 
 
 class MLP(nn.Module):
@@ -22,9 +22,7 @@ class MLP(nn.Module):
 
     """
 
-    def __init__(
-            self, n_in, n_out, n_hidden=None, n_layers=2, activation=mish
-    ):
+    def __init__(self, n_in, n_out, n_hidden=None, n_layers=2, activation=mish):
         super(MLP, self).__init__()
         # get list of number of nodes in input, hidden & output layers
         if n_hidden is None:
@@ -43,7 +41,8 @@ class MLP(nn.Module):
         # assign a Dense layer (with activation function) to each hidden layer
         layers = [
             Dense(
-                self.n_neurons[i], self.n_neurons[i + 1],
+                self.n_neurons[i],
+                self.n_neurons[i + 1],
                 activation=activation,
             )
             for i in range(n_layers - 1)
@@ -51,7 +50,8 @@ class MLP(nn.Module):
         # assign a Dense layer (without activation function) to the output layer
         layers.append(
             Dense(
-                self.n_neurons[-2], self.n_neurons[-1],
+                self.n_neurons[-2],
+                self.n_neurons[-1],
                 activation=None,
             )
         )

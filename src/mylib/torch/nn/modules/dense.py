@@ -1,7 +1,6 @@
+from mylib.torch.nn.init import zeros_initializer
 from torch import nn
 from torch.nn.init import xavier_uniform_
-
-from mylib.torch.nn.init import zeros_initializer
 
 
 class Dense(nn.Linear):
@@ -21,14 +20,14 @@ class Dense(nn.Linear):
     """
 
     def __init__(
-            self,
-            in_features,
-            out_features,
-            bias=True,
-            activation=None,
-            weight_init=xavier_uniform_,
-            # weight_init=xavier_normal_,
-            bias_init=zeros_initializer,
+        self,
+        in_features,
+        out_features,
+        bias=True,
+        activation=None,
+        weight_init=xavier_uniform_,
+        # weight_init=xavier_normal_,
+        bias_init=zeros_initializer,
     ):
         self.weight_init = weight_init
         self.bias_init = bias_init

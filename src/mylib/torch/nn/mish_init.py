@@ -37,16 +37,16 @@ def init_weights(m, variance=1.0):
 
     if m is None:
         return
-    if hasattr(m, 'weight') and m.weight is not None:
+    if hasattr(m, "weight") and m.weight is not None:
         # We want to avoid initializing Batch Normalization
-        if hasattr(m, 'running_mean'):
+        if hasattr(m, "running_mean"):
             return
 
         # If we have channels we probably are a Convolutional Layer
         filters = 1
-        if hasattr(m, 'in_channels'):
+        if hasattr(m, "in_channels"):
             filters = m.in_channels
 
         m.weight.data = _initialize_weights(m.weight, variance=variance, filters=filters)
-    if hasattr(m, 'bias') and m.bias is not None:
+    if hasattr(m, "bias") and m.bias is not None:
         m.bias.data = _initialize_bias(m.bias, variance=variance)

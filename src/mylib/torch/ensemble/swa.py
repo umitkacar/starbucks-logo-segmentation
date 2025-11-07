@@ -4,7 +4,7 @@ import torch
 def update_swa(net1, net2, alpha=1):
     with torch.no_grad():  # TODO need this?
         for param1, param2 in zip(net1.parameters(), net2.parameters()):
-            param1.data *= (1.0 - alpha)
+            param1.data *= 1.0 - alpha
             param1.data += param2.data * alpha
 
 
@@ -37,12 +37,12 @@ def _set_momenta(module, momenta):
 
 def bn_update(loader, model):
     """
-        BatchNorm buffers update (if any).
-        Performs 1 epochs to estimate buffers average using train dataset.
+    BatchNorm buffers update (if any).
+    Performs 1 epochs to estimate buffers average using train dataset.
 
-        :param loader: train dataset loader for buffers average estimation.
-        :param model: models being update
-        :return: None
+    :param loader: train dataset loader for buffers average estimation.
+    :param model: models being update
+    :return: None
     """
     if not check_bn(model):
         return

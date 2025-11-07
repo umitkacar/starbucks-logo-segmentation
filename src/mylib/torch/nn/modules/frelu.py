@@ -3,8 +3,7 @@ import torch.nn as nn
 
 
 class FReLU(nn.Module):
-    r""" FReLU formulation. The funnel condition has a window size of kxk. (k=3 by default)
-    """
+    r"""FReLU formulation. The funnel condition has a window size of kxk. (k=3 by default)"""
 
     def __init__(self, in_channels):
         super().__init__()
@@ -18,7 +17,7 @@ class FReLU(nn.Module):
         return x
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     frelu = FReLU(16)
     inputs = torch.randn((2, 16, 32, 32))
     print(frelu(inputs).shape)

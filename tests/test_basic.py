@@ -1,6 +1,5 @@
 """Basic tests for the package"""
 
-import pytest
 from pathlib import Path
 
 

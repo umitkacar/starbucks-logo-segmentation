@@ -1,14 +1,19 @@
 from typing import Optional, Tuple
 
-import torch
 from torch_scatter import scatter_sum
 from torch_scatter.utils import broadcast
 
+import torch
+
 
 @torch.jit.script
-def scatter_mean(src: torch.Tensor, index: torch.Tensor, dim: int = -1,
-                 out: Optional[torch.Tensor] = None,
-                 dim_size: Optional[int] = None) -> Tuple[torch.Tensor, torch.Tensor]:
+def scatter_mean(
+    src: torch.Tensor,
+    index: torch.Tensor,
+    dim: int = -1,
+    out: Optional[torch.Tensor] = None,
+    dim_size: Optional[int] = None,
+) -> Tuple[torch.Tensor, torch.Tensor]:
     out = scatter_sum(src, index, dim, out, dim_size)
     dim_size = out.size(dim)
 
@@ -28,13 +33,22 @@ def scatter_mean(src: torch.Tensor, index: torch.Tensor, dim: int = -1,
 
 
 @torch.jit.script
-def scatter_sort(src: torch.Tensor, index: torch.Tensor, dim: int = 0, descending: bool = False, eps: float = 1e-12):
+def scatter_sort(
+    src: torch.Tensor,
+    index: torch.Tensor,
+    dim: int = 0,
+    descending: bool = False,
+    eps: float = 1e-12,
+):
     f_src = src.float()
     f_min, f_max = f_src.min(dim)[0], f_src.max(dim)[0]
     norm = (f_src - f_min) / (f_max - f_min + eps) + index.float() * (-1) ** int(descending)
     perm = norm.argsort(dim=dim, descending=descending)
 
-    return src[perm], perm,
+    return (
+        src[perm],
+        perm,
+    )
 
 
 def onehot(indexes, N=None, ignore_index=None):

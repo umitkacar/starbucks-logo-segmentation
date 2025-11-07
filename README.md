@@ -9,8 +9,10 @@
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
 [![Lightning](https://img.shields.io/badge/Lightning-1.0+-792EE5.svg?style=for-the-badge&logo=pytorchlightning&logoColor=white)](https://www.pytorchlightning.ai)
+[![Tests](https://img.shields.io/badge/tests-20%20passed-success.svg?style=for-the-badge&logo=pytest)](tests/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/psf/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge&logo=black)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/badge/linter-ruff-red.svg?style=for-the-badge)](https://github.com/astral-sh/ruff)
 [![Hatch](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg?style=for-the-badge)](https://github.com/pypa/hatch)
 
 [Features](#-features) •

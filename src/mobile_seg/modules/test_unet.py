@@ -1,19 +1,16 @@
-from pathlib import Path
-from turtle import forward
 
 import torch
 import torch.nn as nn
-
-import torchvision.transforms.functional as TF
 import torchvision.transforms as T
 
-class Block (nn.Module):
+
+class Block(nn.Module):
     def __init__(self, in_ch, out_ch):
         super().__init__()
         self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=1, padding=1)
         self.relu = nn.ReLU()
         self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, stride=1, padding=1)
-    
+
     def forward(self, x):
         x = self.conv1(x)
         x = self.relu(x)
@@ -21,11 +18,14 @@ class Block (nn.Module):
         x = self.relu(x)
         return x
 
+
 class Encoder(nn.Module):
     def __init__(self, channels=None):
         super().__init__()
-        self.encoder_blocks = nn.ModuleList([Block(channels[i], channels[i+1]) for i in range(len(channels)-1)])
-        self.pool =  nn.MaxPool2d(kernel_size = 2)
+        self.encoder_blocks = nn.ModuleList(
+            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)]
+        )
+        self.pool = nn.MaxPool2d(kernel_size=2)
 
     def forward(self, x):
         features = []
@@ -35,15 +35,23 @@ class Encoder(nn.Module):
             x = self.pool(x)
         return features
 
-class Decoder (nn.Module):
-    def __init__(self, channels = None):
+
+class Decoder(nn.Module):
+    def __init__(self, channels=None):
         super().__init__()
         self.channels = channels
-        self.upconvs = nn.ModuleList([nn.ConvTranspose2d(channels[i],channels[i+1], kernel_size=2, stride=2) for i in range(len(channels)-1)])
-        self.decoder_blocks = nn.ModuleList([Block(channels[i], channels[i+1]) for i in range(len(channels)-1)])
+        self.upconvs = nn.ModuleList(
+            [
+                nn.ConvTranspose2d(channels[i], channels[i + 1], kernel_size=2, stride=2)
+                for i in range(len(channels) - 1)
+            ]
+        )
+        self.decoder_blocks = nn.ModuleList(
+            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)]
+        )
 
     def forward(self, x, encoder_features):
-        for i in range(len(self.channels)-1):
+        for i in range(len(self.channels) - 1):
             x = self.upconvs[i](x)
             enc_ftrs = self.crop(encoder_features[i], x)
             x = torch.cat([x, enc_ftrs], dim=1)
@@ -51,14 +59,15 @@ class Decoder (nn.Module):
         return x
 
     def crop(self, enc_ftrs, x):
-        B,C,H,W = x.shape
-        #enc_ftrs = T.CenterCrop([H,W])(enc_ftrs)
-        enc_ftrs = T.Resize([H,W])(enc_ftrs)
+        B, C, H, W = x.shape
+        # enc_ftrs = T.CenterCrop([H,W])(enc_ftrs)
+        enc_ftrs = T.Resize([H, W])(enc_ftrs)
         return enc_ftrs
 
+
 class Unet(nn.Module):
-    #def __init__(self, enc = (3, 64, 128, 256, 512, 1024), dec=(1024, 512, 256, 128, 64), num_class=11):
-    def __init__(self, enc = (3, 16, 24, 32, 96, 320), dec=(160, 48, 16, 12), num_class=11):
+    # def __init__(self, enc = (3, 64, 128, 256, 512, 1024), dec=(1024, 512, 256, 128, 64), num_class=11):
+    def __init__(self, enc=(3, 16, 24, 32, 96, 320), dec=(160, 48, 16, 12), num_class=11):
         super().__init__()
         self.encoder = Encoder(enc)
 
@@ -93,7 +102,8 @@ class Unet(nn.Module):
 
         return x
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     x = torch.randn(1, 3, 512, 512)
     # encoder_block = Block(3,64)
@@ -111,9 +121,3 @@ if __name__ == '__main__':
 
     unet = Unet()
     print(f"UNET output :{unet(x).shape}")
-
-    
-    
-    
-
-    

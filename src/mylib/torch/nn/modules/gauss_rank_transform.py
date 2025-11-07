@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
 import torch
 import torch.nn as nn
 
@@ -9,8 +10,8 @@ class GaussRankTransform(nn.Module):
         super(GaussRankTransform, self).__init__()
         tformed = self._erfinv(data, eps)
         data, sort_idx = data.sort()
-        self.register_buffer('src', data)
-        self.register_buffer('dst', tformed[sort_idx])
+        self.register_buffer("src", data)
+        self.register_buffer("dst", tformed[sort_idx])
 
     @staticmethod
     def _erfinv(data: torch.Tensor, eps):
@@ -47,7 +48,7 @@ class GaussRankTransform(nn.Module):
 
 
 # %%
-if __name__ == '__main__':
+if __name__ == "__main__":
     # %%
     x = torch.from_numpy(np.random.uniform(low=0, high=1, size=2000))
 
