@@ -53,7 +53,7 @@ class MLP(nn.Module):
                 self.n_neurons[-2],
                 self.n_neurons[-1],
                 activation=None,
-            )
+            ),
         )
         # put all layers together to make the network
         self.out_net = nn.Sequential(*layers)

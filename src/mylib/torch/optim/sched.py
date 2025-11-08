@@ -35,7 +35,7 @@ class _Linear:
                 np.ones(steps_pre) * self.start,
                 np.linspace(self.start, self.stop, linear_steps),
                 np.ones(steps_post) * self.stop,
-            )
+            ),
         )
 
     def __call__(self, step: int):

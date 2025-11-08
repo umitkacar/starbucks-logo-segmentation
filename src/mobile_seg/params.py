@@ -86,7 +86,7 @@ class Params(ParamsMixIn):
                         **conf_orig.module_params,
                         "fold": n,
                     },
-                }
+                },
             )
             for n in range(self.d.n_splits)
         ]

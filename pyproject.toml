@@ -271,14 +271,26 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401", "F403", "E402"]
+"__init__.py" = ["F401", "F403", "E402", "EXE002"]
 "tests/**/*.py" = [
     "S101",   # assert allowed in tests
     "ARG",    # unused function args allowed in tests
     "FBT",    # boolean trap allowed in tests
     "PLR2004", # magic values allowed in tests
     "S311",   # standard pseudo-random generators allowed in tests
+    "ANN201",  # missing return type in tests is ok
+    "PTH123",  # open() vs Path.open() in tests is ok
+    "PLC0415", # imports in tests can be inside functions
 ]
+# Legacy code - more lenient rules (comprehensive ignores)
+"src/mobile_seg/**/*.py" = ["ANN", "ARG", "ERA001", "T201", "PTH", "N", "E402", "EXE002", "A", "PLR", "INP001", "UP008", "RUF", "RET504"]
+"src/mylib/**/*.py" = ["ANN", "ARG", "ERA001", "T201", "PTH", "N", "C408", "SIM", "PLR", "UP", "A", "COM", "RUF", "RET504", "EXE002", "NPY", "EM", "PD", "FBT", "B", "TRY", "S", "E", "SLF", "PLW", "INP001"]
+"src/coreml*.py" = ["ANN", "ERA001", "T201", "PTH", "EXE002", "UP008", "RET504"]
+"src/data/__init__.py" = ["ANN", "ARG", "ERA001", "N812", "C416", "EXE002"]
+"src/model/__init__.py" = ["ANN", "ARG", "N806", "ERA001", "TRY002"]
+"src/main_*.py" = ["ANN", "FBT", "RUF059", "PTH", "EXE002", "RET504", "BLE001", "EM102", "G004"]
+# Modern CLI - allow lazy imports and broad exception handling for UX
+"src/starbucks_logo_seg/cli.py" = ["PLC0415", "BLE001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["starbucks_logo_seg", "mobile_seg", "mylib"]
@@ -302,7 +314,7 @@ max-statements = 60
 # ============================================================================
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 warn_redundant_casts = true
@@ -310,7 +322,7 @@ warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
 strict_equality = true
-strict_concatenate = true
+extra_checks = true
 
 # Strictness flags (gradually enable)
 disallow_untyped_defs = false  # Enable gradually

@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import IO, Dict, Optional, Type, TypeVar, Union
 
-import yaml
 from dacite import from_dict
 from omegaconf import DictConfig, OmegaConf
+import yaml
 
 T = TypeVar("T")
 

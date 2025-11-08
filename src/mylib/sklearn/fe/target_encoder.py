@@ -2,9 +2,9 @@ import numbers
 from typing import Iterable, List, Optional, Union
 
 import category_encoders as ce
+from category_encoders.utils import convert_input, convert_input_vector
 import numpy as np
 import pandas as pd
-from category_encoders.utils import convert_input, convert_input_vector
 
 from sklearn import model_selection
 from sklearn.base import BaseEstimator, TransformerMixin, clone
@@ -23,8 +23,7 @@ def check_cv(
     if isinstance(cv, numbers.Integral):
         if stratified and (y is not None) and (type_of_target(y) in ("binary", "multiclass")):
             return StratifiedKFold(cv, shuffle=True, random_state=random_state)
-        else:
-            return KFold(cv, shuffle=True, random_state=random_state)
+        return KFold(cv, shuffle=True, random_state=random_state)
 
     return model_selection.check_cv(cv, y, stratified)
 
@@ -123,7 +122,7 @@ class KFoldEncoderWrapper(BaseEstimator, TransformerMixin):
         return X_ if self.return_same_type and is_pandas else X_.values
 
     def fit_transform(
-        self, X: Union[pd.DataFrame, np.ndarray], y: pd.Series = None, **fit_params
+        self, X: Union[pd.DataFrame, np.ndarray], y: pd.Series = None, **fit_params,
     ) -> Union[pd.DataFrame, np.ndarray]:
         """
         Fit models for each fold, then transform X

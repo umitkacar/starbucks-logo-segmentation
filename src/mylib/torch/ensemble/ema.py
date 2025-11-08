@@ -2,7 +2,7 @@ import copy
 from typing import TypeVar
 
 import torch
-import torch.nn as nn
+from torch import nn
 
 T = TypeVar("T", bound=nn.Module)
 

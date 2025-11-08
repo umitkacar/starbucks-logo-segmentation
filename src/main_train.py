@@ -89,7 +89,7 @@ def create_callbacks(config: Dict[str, Any]) -> list:
                 patience=20,
                 mode="min",
                 verbose=True,
-            )
+            ),
         )
 
     return callbacks
@@ -141,7 +141,7 @@ def main():
 
     console.print("[green]✓[/green] Trainer initialized")
     console.print(
-        f"[dim]Using {config.get('gpus', 0)} GPU(s), Precision: {config['precision']}-bit[/dim]"
+        f"[dim]Using {config.get('gpus', 0)} GPU(s), Precision: {config['precision']}-bit[/dim]",
     )
 
     # Create model and data module

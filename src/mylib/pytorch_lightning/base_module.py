@@ -17,12 +17,12 @@ from typing import (
 )
 
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
-import pytorch_lightning as pl
 from mylib.torch.ensemble.ema import update_ema
+import pytorch_lightning as pl
 
 
 class ModuleParams(Protocol):
@@ -83,7 +83,7 @@ class PLBaseModule(pl.LightningModule, ABC, Generic[T]):
         self.__log(metrics, prefix="train")
 
     def validation_epoch_end(
-        self, outputs_list: Union[Sequence[StepResult], Sequence[Sequence[ValStepResult]]]
+        self, outputs_list: Union[Sequence[StepResult], Sequence[Sequence[ValStepResult]]],
     ):
         # Ensure that val loader is a list.
         if isinstance(self.val_dataloader(), DataLoader):

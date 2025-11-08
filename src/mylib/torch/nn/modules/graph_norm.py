@@ -1,5 +1,5 @@
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 class GraphNorm(nn.Module):
@@ -21,7 +21,7 @@ class GraphNorm(nn.Module):
     def forward(self, batch_list, tensor, print_=False):
         if self.norm is not None and type(self.norm) != str:
             return self.norm(tensor)
-        elif self.norm is None:
+        if self.norm is None:
             return tensor
         device = tensor.device
 

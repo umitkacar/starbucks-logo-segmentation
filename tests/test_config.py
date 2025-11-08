@@ -3,8 +3,6 @@
 import json
 from pathlib import Path
 
-import pytest
-
 
 def test_config_valid_json():
     """Test that config file is valid JSON"""

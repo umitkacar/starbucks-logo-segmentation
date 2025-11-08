@@ -14,9 +14,9 @@ PACKAGE_ROOT = Path(__file__).parent
 PROJECT_ROOT = PACKAGE_ROOT.parent.parent
 
 __all__ = [
-    "__version__",
-    "__author__",
-    "__description__",
     "PACKAGE_ROOT",
     "PROJECT_ROOT",
+    "__author__",
+    "__description__",
+    "__version__",
 ]
