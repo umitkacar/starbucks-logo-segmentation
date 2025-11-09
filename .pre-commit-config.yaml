@@ -39,7 +39,7 @@ repos:
     rev: 23.12.1
     hooks:
       - id: black
-        language_version: python3.8
+        language_version: python3.11
         args: ['--line-length=100']
         files: '\.pyi?$'
 
@@ -94,6 +94,29 @@ repos:
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
+
+  # ============================================================================
+  # Local Hooks (Custom Quality Checks)
+  # ============================================================================
+  - repo: local
+    hooks:
+      # Run tests with coverage threshold
+      - id: pytest-coverage
+        name: pytest with coverage check
+        entry: bash -c 'pytest tests/ --cov=src/starbucks_logo_seg --cov-report=term-missing --cov-fail-under=40 -n auto'
+        language: system
+        pass_filenames: false
+        always_run: false
+        stages: [manual]  # Run manually with --hook-stage manual
+
+      # Run fast unit tests only
+      - id: pytest-quick
+        name: pytest quick unit tests
+        entry: bash -c 'pytest tests/ -m "not slow" -x --tb=short -n auto'
+        language: system
+        pass_filenames: false
+        always_run: false
+        stages: [manual]  # Run manually
 
 # ============================================================================
 # CI Configuration

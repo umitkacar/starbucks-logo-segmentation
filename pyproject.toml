@@ -75,6 +75,7 @@ dev = [
     "mypy>=1.0.0",
     "bandit>=1.7.0",  # Security linting
     "safety>=2.0.0",  # Dependency security check
+    "uv>=0.1.0",  # Ultra-fast package manager & audit tool
 
     # Pre-commit
     "pre-commit>=3.0.0",
