@@ -38,7 +38,7 @@ def make_bert_emb(
                                 cls_token,
                                 token[1:-1][torch.randperm(len(token) - 2)],
                                 sep_token,
-                            )
+                            ),
                         )
                         for _ in range(n_shuffle)
                     ],
@@ -73,7 +73,7 @@ def make_bert_emb(
                         data=emb.reshape(1, -1),
                         index=[idx],
                     ),
-                )
+                ),
             )
     if not save_as_npy:
         results.columns = [str(n) for n in range(results.shape[1])]

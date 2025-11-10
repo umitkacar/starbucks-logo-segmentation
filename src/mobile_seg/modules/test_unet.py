@@ -1,6 +1,6 @@
 
 import torch
-import torch.nn as nn
+from torch import nn
 import torchvision.transforms as T
 
 
@@ -23,7 +23,7 @@ class Encoder(nn.Module):
     def __init__(self, channels=None):
         super().__init__()
         self.encoder_blocks = nn.ModuleList(
-            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)]
+            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)],
         )
         self.pool = nn.MaxPool2d(kernel_size=2)
 
@@ -44,10 +44,10 @@ class Decoder(nn.Module):
             [
                 nn.ConvTranspose2d(channels[i], channels[i + 1], kernel_size=2, stride=2)
                 for i in range(len(channels) - 1)
-            ]
+            ],
         )
         self.decoder_blocks = nn.ModuleList(
-            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)]
+            [Block(channels[i], channels[i + 1]) for i in range(len(channels) - 1)],
         )
 
     def forward(self, x, encoder_features):

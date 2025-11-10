@@ -2,22 +2,16 @@
 
 from pathlib import Path
 
-import pytest
-
 
 def test_package_has_init():
     """Test that starbucks_logo_seg package has __init__.py"""
-    init_file = (
-        Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "__init__.py"
-    )
+    init_file = Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "__init__.py"
     assert init_file.exists()
 
 
 def test_package_has_version():
     """Test that package has version information"""
-    init_file = (
-        Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "__init__.py"
-    )
+    init_file = Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "__init__.py"
     with open(init_file) as f:
         content = f.read()
     assert "__version__" in content
@@ -25,9 +19,7 @@ def test_package_has_version():
 
 def test_package_has_cli():
     """Test that package has CLI module"""
-    cli_file = (
-        Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "cli.py"
-    )
+    cli_file = Path(__file__).parent.parent / "src" / "starbucks_logo_seg" / "cli.py"
     assert cli_file.exists()
 
 

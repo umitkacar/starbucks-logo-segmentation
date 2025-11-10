@@ -26,5 +26,5 @@ def configure_logging():
                     "propagate": 0,
                 },
             },
-        }
+        },
     )

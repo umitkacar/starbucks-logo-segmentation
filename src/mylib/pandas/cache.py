@@ -1,6 +1,6 @@
-import hashlib
 from dataclasses import dataclass
 from functools import wraps
+import hashlib
 from pathlib import Path
 from typing import Callable, Optional, Union
 
@@ -8,7 +8,7 @@ import pandas as pd
 
 
 def _make_hash(func: Callable, args, kwargs) -> str:
-    k = f"{func.__name__}_{repr(args)}_{repr(kwargs)}"
+    k = f"{func.__name__}_{args!r}_{kwargs!r}"
     h = hashlib.md5(k.encode("utf8")).hexdigest()[:6]
     return h
 
@@ -43,7 +43,7 @@ class pd_cache:
             assert self.ext is not None, "ext must be specified, when fname is None."
         else:
             self.ext = Path(self.file_name).suffix
-            assert self.ext in _FN_MAP.keys(), ".pqt or .pkl is supported as file_name."
+            assert self.ext in _FN_MAP, ".pqt or .pkl is supported as file_name."
 
     def __call__(self, func):
         @wraps(func)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
             [
                 {"a": 1},
                 {"a": 2},
-            ]
+            ],
         )
 
     print(foo(5, y=2))

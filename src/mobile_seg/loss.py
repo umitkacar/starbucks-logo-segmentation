@@ -1,5 +1,5 @@
 import torch
-import torch.nn as nn
+from torch import nn
 from torch.nn.functional import interpolate
 
 
@@ -26,7 +26,7 @@ def ce_loss(scale=2):
         if scale == 2:
             input = interpolate(input, scale_factor=scale, mode="nearest", align_corners=False)
         class_weights = torch.tensor(
-            [0.05, 0.01, 0.12, 0.05, 0.12, 0.12, 0.12, 0.05, 0.12, 0.12, 0.12]
+            [0.05, 0.01, 0.12, 0.05, 0.12, 0.12, 0.12, 0.05, 0.12, 0.12, 0.12],
         ).to("cuda")
         return nn.CrossEntropyLoss(weight=class_weights, reduction="mean")(input, target)
 

@@ -1,7 +1,7 @@
 """Tests for imports and dependencies"""
 
-import sys
 from pathlib import Path
+import sys
 
 import pytest
 

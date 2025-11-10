@@ -1,7 +1,7 @@
 from timm.models.layers import Mish
 
-import torch
 from mylib.torch.nn.modules.dense import Dense
+import torch
 from torch import nn
 
 

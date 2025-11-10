@@ -38,7 +38,7 @@ def load_df(path_list):
         {
             "img_path": map(str, img_paths),
             "mask_path": map(str, mask_paths),
-        }
+        },
     )
 
 

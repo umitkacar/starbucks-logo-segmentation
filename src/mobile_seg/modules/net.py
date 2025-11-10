@@ -1,5 +1,3 @@
-import torch
-import torch.nn as nn
 from timm.models.efficientnet import (
     efficientnet_lite0,
     mobilenetv2_035,
@@ -10,6 +8,8 @@ from timm.models.efficientnet import (
     mobilenetv2_140,
 )
 from timm.models.efficientnet_builder import efficientnet_init_weights
+import torch
+from torch import nn
 
 from mylib.pytorch_lightning.base_module import load_pretrained_dict, load_pretrained_dict_coreml
 
@@ -21,7 +21,7 @@ class ConvBNReLU(nn.Sequential):
             norm_layer = nn.BatchNorm2d
         super(ConvBNReLU, self).__init__(
             nn.Conv2d(
-                in_planes, out_planes, kernel_size, stride, padding, groups=groups, bias=False
+                in_planes, out_planes, kernel_size, stride, padding, groups=groups, bias=False,
             ),
             norm_layer(out_planes),
             nn.ReLU6(inplace=True),
@@ -48,20 +48,19 @@ class InvertedResidual(nn.Module):
             [
                 # dw
                 ConvBNReLU(
-                    hidden_dim, hidden_dim, stride=stride, groups=hidden_dim, norm_layer=norm_layer
+                    hidden_dim, hidden_dim, stride=stride, groups=hidden_dim, norm_layer=norm_layer,
                 ),
                 # pw-linear
                 nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
                 norm_layer(oup),
-            ]
+            ],
         )
         self.conv = nn.Sequential(*layers)
 
     def forward(self, x):
         if self.use_res_connect:
             return x + self.conv(x)
-        else:
-            return self.conv(x)
+        return self.conv(x)
 
 
 class UpSampleBlock(nn.Module):
@@ -98,7 +97,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(136, 48),
                         UpSampleBlock(48, 32),
                         UpSampleBlock(32, 24),
-                    ]
+                    ],
                 )
 
             if self.arch_name == "mobilenetv2_120d":
@@ -109,7 +108,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(112, 40),
                         UpSampleBlock(40, 32),
                         UpSampleBlock(32, 24),
-                    ]
+                    ],
                 )
 
             if self.category == "binary":
@@ -117,7 +116,7 @@ class MobileNetV2_unet(nn.Module):
                 if self.io_ratio == "half":
 
                     self.conv_last = nn.Sequential(
-                        nn.Conv2d(24, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid()
+                        nn.Conv2d(24, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid(),
                     )
 
                 elif self.io_ratio == "same":
@@ -154,7 +153,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(96, 32),
                         UpSampleBlock(32, 24),
                         UpSampleBlock(24, 16),
-                    ]
+                    ],
                 )
 
             if self.arch_name == "mobilenetv2_075":
@@ -165,7 +164,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(72, 24),
                         UpSampleBlock(24, 24),
                         UpSampleBlock(24, 16),
-                    ]
+                    ],
                 )
 
             if self.arch_name == "efficientnet_lite0":
@@ -176,7 +175,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(112, 40),
                         UpSampleBlock(40, 24),
                         UpSampleBlock(24, 16),
-                    ]
+                    ],
                 )
 
             if self.category == "binary":
@@ -184,7 +183,7 @@ class MobileNetV2_unet(nn.Module):
                 if self.io_ratio == "half":
 
                     self.conv_last = nn.Sequential(
-                        nn.Conv2d(16, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid()
+                        nn.Conv2d(16, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid(),
                     )
 
                 elif self.io_ratio == "same":
@@ -221,7 +220,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(48, 16),
                         UpSampleBlock(16, 16),
                         UpSampleBlock(16, 8),
-                    ]
+                    ],
                 )
             if self.arch_name == "mobilenetv2_035":
                 self.backbone = mobilenetv2_035(pretrained=True, **kwargs)
@@ -231,7 +230,7 @@ class MobileNetV2_unet(nn.Module):
                         UpSampleBlock(32, 16),
                         UpSampleBlock(16, 8),
                         UpSampleBlock(8, 8),
-                    ]
+                    ],
                 )
 
             if self.category == "binary":
@@ -239,7 +238,7 @@ class MobileNetV2_unet(nn.Module):
                 if self.io_ratio == "half":
 
                     self.conv_last = nn.Sequential(
-                        nn.Conv2d(8, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid()
+                        nn.Conv2d(8, 3, 1), nn.Conv2d(3, self.num_classes, 1), nn.Sigmoid(),
                     )
 
                 elif self.io_ratio == "same":
@@ -290,19 +289,7 @@ class MobileNetV2_unet(nn.Module):
         for b in self.backbone.blocks:
 
             x = b(x)
-            if self.arch_name == "efficientnet_lite0" and x.shape[1] in [16, 24, 40, 112]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_120d" and x.shape[1] in [24, 32, 40, 112]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_140" and x.shape[1] in [24, 32, 48, 136]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_100" and x.shape[1] in [16, 24, 32, 96]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_075" and x.shape[1] in [16, 24, 72]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_050" and x.shape[1] in [8, 16, 48]:
-                down_feats.append(x)
-            elif self.arch_name == "mobilenetv2_035" and x.shape[1] in [8, 16, 32]:
+            if (self.arch_name == "efficientnet_lite0" and x.shape[1] in [16, 24, 40, 112]) or (self.arch_name == "mobilenetv2_120d" and x.shape[1] in [24, 32, 40, 112]) or (self.arch_name == "mobilenetv2_140" and x.shape[1] in [24, 32, 48, 136]) or (self.arch_name == "mobilenetv2_100" and x.shape[1] in [16, 24, 32, 96]) or (self.arch_name == "mobilenetv2_075" and x.shape[1] in [16, 24, 72]) or (self.arch_name == "mobilenetv2_050" and x.shape[1] in [8, 16, 48]) or (self.arch_name == "mobilenetv2_035" and x.shape[1] in [8, 16, 32]):
                 down_feats.append(x)
 
         x = self.backbone.conv_head(x)

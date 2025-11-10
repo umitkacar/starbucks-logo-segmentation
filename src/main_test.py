@@ -12,9 +12,9 @@ import imageio
 import imgviz
 import matplotlib.pyplot as plt
 import numpy as np
-import torch
 from rich.console import Console
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn
+import torch
 
 from mobile_seg.modules.net import load_trained_model
 
@@ -54,7 +54,7 @@ def load_config(config_path: str = "params/config.json") -> dict:
 
 
 def load_and_preprocess_image(
-    image_path: Path, img_size: int = 512
+    image_path: Path, img_size: int = 512,
 ) -> Tuple[torch.Tensor, np.ndarray]:
     """
     Load and preprocess image for inference.
@@ -75,14 +75,14 @@ def load_and_preprocess_image(
 
     # Convert to tensor
     img_tensor = torch.from_numpy(
-        img_resized.astype(np.float32).transpose((2, 0, 1)) / 255.0
+        img_resized.astype(np.float32).transpose((2, 0, 1)) / 255.0,
     ).unsqueeze(0)
 
     return img_tensor, img_resized
 
 
 def visualize_comparison(
-    output_path: Path, original: np.ndarray, prediction: np.ndarray, save: bool = True
+    output_path: Path, original: np.ndarray, prediction: np.ndarray, save: bool = True,
 ) -> None:
     """
     Create side-by-side visualization of original and predicted mask.
@@ -111,7 +111,7 @@ def visualize_comparison(
 
 
 def create_overlay_visualization(
-    original: np.ndarray, mask: np.ndarray, alpha: float = 0.5
+    original: np.ndarray, mask: np.ndarray, alpha: float = 0.5,
 ) -> np.ndarray:
     """
     Create overlay visualization with colored mask.
@@ -139,7 +139,7 @@ def create_overlay_visualization(
 
 
 def generate_gif(
-    gif_dir: Path, output_path: Path, original: np.ndarray, overlay: np.ndarray, fps: int = 2
+    gif_dir: Path, output_path: Path, original: np.ndarray, overlay: np.ndarray, fps: int = 2,
 ) -> None:
     """
     Generate animated GIF showing original and overlay.
@@ -170,7 +170,7 @@ def generate_gif(
 
 
 def process_image(
-    model: torch.nn.Module, image_path: Path, config: dict, output_dirs: Dict[str, Path]
+    model: torch.nn.Module, image_path: Path, config: dict, output_dirs: Dict[str, Path],
 ) -> None:
     """
     Process a single image and generate all visualizations.

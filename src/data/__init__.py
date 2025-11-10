@@ -82,7 +82,7 @@ class DataModule(pl.LightningDataModule):
                         ],
                         p=0.1,
                     ),
-                ]
+                ],
             ),
         )
         self.val_dataset = MaskDataset(
@@ -95,7 +95,7 @@ class DataModule(pl.LightningDataModule):
                         self.params["img_size"],
                         self.params["img_size"],
                     ),
-                ]
+                ],
             ),
         )
 

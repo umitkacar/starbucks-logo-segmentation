@@ -62,7 +62,7 @@ empty_expressions = [
     "&emsp;",
     "&ndash;",
     "&mdash;",
-    "&ensp;" "&quot;",
+    "&ensp;&quot;",
     "&#39;",
 ]
 

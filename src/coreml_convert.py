@@ -1,9 +1,9 @@
 import json
 
 import coremltools as ct
-import torch
-import torch.nn as nn
 from coremltools.models.neural_network import quantization_utils
+import torch
+from torch import nn
 
 from mobile_seg.modules.net import load_trained_model
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
                     color_layout=ct.colorlayout.RGB,
                     shape=input_tensor.shape,
                     scale=1.0 / 255.0,
-                )
+                ),
             ],
             outputs=[ct.ImageType(name="output", color_layout=ct.colorlayout.RGB)],
             convert_to="neuralnetwork",

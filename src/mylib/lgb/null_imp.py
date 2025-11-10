@@ -54,12 +54,12 @@ class NullImpSelection:
             f_null_imps_gain = null_imp.loc[null_imp["feature"] == _f, "importance_gain"].values
             f_act_imps_gain = real_imp.loc[real_imp["feature"] == _f, "importance_gain"].mean()
             gain_score = np.log(
-                1e-10 + f_act_imps_gain / (1 + np.percentile(f_null_imps_gain, 75))
+                1e-10 + f_act_imps_gain / (1 + np.percentile(f_null_imps_gain, 75)),
             )  # Avoid divide by zero
             f_null_imps_split = null_imp.loc[null_imp["feature"] == _f, "importance_split"].values
             f_act_imps_split = real_imp.loc[real_imp["feature"] == _f, "importance_split"].mean()
             split_score = np.log(
-                1e-10 + f_act_imps_split / (1 + np.percentile(f_null_imps_split, 75))
+                1e-10 + f_act_imps_split / (1 + np.percentile(f_null_imps_split, 75)),
             )  # Avoid divide by zero
             feature_scores.append((_f, split_score, gain_score))
 

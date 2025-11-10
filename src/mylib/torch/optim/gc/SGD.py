@@ -6,7 +6,7 @@ from torch.optim.optimizer import required
 class SGD_GCC(Optimizer):
 
     def __init__(
-        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False
+        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False,
     ):
         if lr is not required and lr < 0.0:
             raise ValueError(f"Invalid learning rate: {lr}")
@@ -80,7 +80,7 @@ class SGD_GCC(Optimizer):
 class SGD_GC(Optimizer):
 
     def __init__(
-        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False
+        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False,
     ):
         if lr is not required and lr < 0.0:
             raise ValueError(f"Invalid learning rate: {lr}")
@@ -154,7 +154,7 @@ class SGD_GC(Optimizer):
 class SGDW(Optimizer):
 
     def __init__(
-        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False
+        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False,
     ):
         if lr is not required and lr < 0.0:
             raise ValueError(f"Invalid learning rate: {lr}")
@@ -226,7 +226,7 @@ class SGDW(Optimizer):
 
 class SGDW_GCC(Optimizer):
     def __init__(
-        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False
+        self, params, lr=required, momentum=0, dampening=0, weight_decay=0, nesterov=False,
     ):
         if lr is not required and lr < 0.0:
             raise ValueError(f"Invalid learning rate: {lr}")

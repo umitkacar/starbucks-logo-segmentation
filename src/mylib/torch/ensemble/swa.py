@@ -57,7 +57,7 @@ def bn_update(loader, model):
         b = input_var.data.size(0)
 
         momentum = b / (n + b)
-        for module in momenta.keys():
+        for module in momenta:
             module.momentum = momentum
 
         model(input_var)

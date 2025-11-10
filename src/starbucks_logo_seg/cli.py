@@ -13,13 +13,12 @@ console = Console()
 
 @click.group()
 @click.version_option(version="1.0.0")
-def cli():
+def cli() -> None:
     """
     🌟 Starbucks Logo Segmentation CLI
 
     Ultra-modern tool for training and testing logo segmentation models.
     """
-    pass
 
 
 @cli.command()
@@ -37,7 +36,7 @@ def cli():
     default=1,
     help="Number of GPUs to use",
 )
-def train(config: str, gpus: int):
+def train(config: str, gpus: int) -> None:
     """
     🚀 Train the segmentation model
 
@@ -79,7 +78,7 @@ def train(config: str, gpus: int):
     default="output",
     help="Output directory",
 )
-def predict(config: str, image: str, output: str):
+def predict(config: str, image: str, output: str) -> None:
     """
     🎨 Predict segmentation mask for an image
 
@@ -105,7 +104,7 @@ def predict(config: str, image: str, output: str):
     default="src/params/config.json",
     help="Path to configuration file",
 )
-def test(config: str):
+def test(config: str) -> None:
     """
     🧪 Test the trained model
 
@@ -123,7 +122,7 @@ def test(config: str):
         sys.exit(1)
 
 
-def main():
+def main() -> None:
     """Main entry point"""
     cli()
 

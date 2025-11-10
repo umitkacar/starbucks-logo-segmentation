@@ -1,7 +1,7 @@
 from typing import List
 
-import pandas as pd
 from lightgbm import Booster
+import pandas as pd
 
 
 def make_imp_df(boosters: List[Booster]) -> pd.DataFrame:
@@ -9,7 +9,7 @@ def make_imp_df(boosters: List[Booster]) -> pd.DataFrame:
         [
             pd.DataFrame({"name": b.feature_name(), "importance": b.feature_importance()})
             for b in boosters
-        ]
+        ],
     )
     return (
         df.groupby("name")
