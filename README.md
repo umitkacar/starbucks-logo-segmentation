@@ -1,11 +1,14 @@
 <div align="center">
 
 # 🌟 Starbucks Logo Segmentation
+### *MobileNetV2-UNet Semantic Segmentation with 50ms Inference*
 
-### Ultra-Modern Deep Learning for Logo Detection
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=true&width=900&lines=MobileNetV2-UNet+Architecture+%F0%9F%8F%97%EF%B8%8F;50ms+Inference+%E2%9A%A1+PyTorch+Lightning;CoreML+%2B+ONNX+Export+%F0%9F%93%B1" alt="Typing SVG" />
 
 <img src="output/starbucks-logo.png" width="200" height="200" alt="Starbucks Logo">
 
+[![Stars](https://img.shields.io/github/stars/umitkacar/starbucks-logo-segmentation?style=for-the-badge&logo=github&color=yellow)](https://github.com/umitkacar/starbucks-logo-segmentation/stargazers)
+[![Forks](https://img.shields.io/github/forks/umitkacar/starbucks-logo-segmentation?style=for-the-badge&logo=github)](https://github.com/umitkacar/starbucks-logo-segmentation/network)
 [![Python](https://img.shields.io/badge/python-3.8+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-EE4C2C.svg?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
 [![Lightning](https://img.shields.io/badge/Lightning-1.0+-792EE5.svg?style=for-the-badge&logo=pytorchlightning&logoColor=white)](https://www.pytorchlightning.ai)
